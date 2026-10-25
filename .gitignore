@@ -1,2 +1,4 @@
 .env
+.mode
 peek-hotkey
+bridge.log
