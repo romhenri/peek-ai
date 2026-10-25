@@ -14,9 +14,18 @@ echo 'OPENROUTER_API_KEY=sk-or-...' > .env
 ./peek.sh test/chat.png   # answer to stdout
 ```
 
+## Mode
+```bash
+./set-mode.sh claude       # claude-code/sonnet via local bridge (Claude plan, `claude -p`)
+./set-mode.sh openrouter   # nvidia/nemotron-3.5-super-vl:free
+./set-mode.sh              # show current mode
+node bridge.js             # manual start; peek.sh auto-starts it on 127.0.0.1:8787
+```
+
 ## Test
 ```bash
-./test/test.sh   # end-to-end on the free model
+./test/test.sh     # end-to-end in the current mode
+./test/bridge.sh   # bridge: models, 400 on bad model, streaming, peek.sh via bridge
 ```
 
 ## Notes
