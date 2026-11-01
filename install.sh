@@ -10,7 +10,7 @@ codesign -f -s - /Applications/Peek.app
 /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f /Applications/Peek.app
 mdimport /Applications/Peek.app
 
-# Atalho global ⌃⌥P: daemon em ~/Library/LaunchAgents, sobe sozinho no login
+# Atalho global ⌃⌥P (+ letra opcional, ex.: I): daemon em ~/Library/LaunchAgents, sobe sozinho no login
 swiftc -swift-version 5 -O hotkey.swift -o peek-hotkey
 PLIST=~/Library/LaunchAgents/com.peek-ai.hotkey.plist
 cat > "$PLIST" <<PL
@@ -25,4 +25,4 @@ cat > "$PLIST" <<PL
 PL
 launchctl bootout gui/$(id -u) "$PLIST" 2>/dev/null
 launchctl bootstrap gui/$(id -u) "$PLIST"
-echo "Pronto: ⌃⌥P em qualquer app, ou clique no Peek no Dock."
+echo "Pronto: ⌃⌥P responde, ⌃⌥P e depois I explica, em qualquer app (ou clique no Peek no Dock)."

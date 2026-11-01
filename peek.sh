@@ -9,12 +9,10 @@ DIR=$(cd "$(dirname "$0")" && pwd)
 API="${PEEK_API:-https://openrouter.ai/api/v1}"
 MODEL="${PEEK_MODEL:-nvidia/nemotron-3.5-super-vl:free}"
 LAST="${TMPDIR:-/tmp}/peek-last.png"
-PROMPT="Identifique o que é esta captura de tela e responda direto, em português, sem explicações:
-- Conversa (WhatsApp, DM): sugira uma resposta curta e natural para a última mensagem.
-- Email: escreva só o corpo da resposta.
-- Formulário: responda cada campo no formato 'campo: resposta'.
-- Comentários (Instagram etc.): uma resposta por comentário no formato '@usuario: resposta'.
-- Outro: resolva o que estiver na tela."
+# prompts/<nome>.txt: PEEK_PROMPT=... vence, senão o que o atalho escreveu em .prompt, senão answer
+NAME="${PEEK_PROMPT:-$(cat "$DIR/.prompt" 2>/dev/null)}"
+[ -f "$DIR/prompts/$NAME.txt" ] || NAME=answer
+PROMPT=$(cat "$DIR/prompts/$NAME.txt")
 
 # Sem terminal (veio do Peek.app): captura e reabre este script no Terminal, que não precisa de permissão extra
 if [ -z "$1" ] && [ ! -t 1 ]; then
@@ -29,10 +27,10 @@ else
   log() { printf '%s\n' "$*"; }
   [ -s "$LAST" ] || { screencapture -i "$LAST"; [ -s "$LAST" ] || exit 0; }
   IMG="$LAST"
-  trap 'rm -f "$IMG"; echo; read -rp "Enter para fechar " _' EXIT
+  trap 'rm -f "$IMG" "$DIR/.prompt"; echo; read -rp "Enter para fechar " _' EXIT
 fi
 
-log "📸 Captura: $(( $(stat -f %z "$IMG") / 1024 )) KB"
+log "📸 Captura: $(( $(stat -f %z "$IMG") / 1024 )) KB  ·  prompt: $NAME"
 if [[ "$API" == http://127.0.0.1* ]]; then
   # modo claude: sobe o bridge local se ainda não estiver no ar
   if ! curl -s --max-time 1 "$API/models" >/dev/null; then

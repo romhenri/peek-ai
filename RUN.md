@@ -3,15 +3,16 @@
 ## Setup
 ```bash
 echo 'OPENROUTER_API_KEY=sk-or-...' > .env
-./install.sh   # Peek.app + global ⌃⌥P hotkey (LaunchAgent)
+./install.sh   # Peek.app + global hotkeys (LaunchAgent)
 ```
 
 ## Run
 ```bash
-# ⌃⌥P in any app (or click Peek in the Dock): select a region, a Terminal window
+# ⌃⌥P answers, ⌃⌥P then I explains (any app, or click Peek in the Dock): select a region, a Terminal window
 # shows capture size, request, HTTP status, tokens and the answer (copied to clipboard)
 ./peek.sh
 ./peek.sh test/chat.png   # answer to stdout
+PEEK_PROMPT=info ./peek.sh test/chat.png   # any prompts/<name>.txt
 ```
 
 ## Mode
@@ -29,6 +30,7 @@ node bridge.js             # manual start; peek.sh auto-starts it on 127.0.0.1:8
 ```
 
 ## Notes
+- New variation: add `prompts/<name>.txt` + a letter in `followers` (hotkey.swift), then `./install.sh`. ⌃⌥P alone waits 0.8s for a letter (`wait`).
 - macOS only (screencapture, pbcopy, osacompile, swiftc); needs `jq` and `curl`.
 - Default model `nvidia/nemotron-3.5-super-vl:free`; override with `PEEK_MODEL=...`.
 - First run asks for Screen Recording permission for Peek.app.
