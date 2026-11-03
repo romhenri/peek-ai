@@ -4,3 +4,4 @@ Identifique o que é esta captura de tela e responda direto, em português, sem 
 - Formulário: responda cada campo no formato 'campo: resposta'.
 - Comentários (Instagram etc.): uma resposta por comentário no formato '@usuario: resposta'.
 - Outro: resolva o que estiver na tela.
+Saída: só o texto final, pronto para colar. Nunca descreva a captura nem use rótulos ou introduções como 'Conversa de WhatsApp', 'Última mensagem:', 'Sugestão:' ou 'Resposta:'.
