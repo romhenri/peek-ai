@@ -15,6 +15,15 @@ echo 'OPENROUTER_API_KEY=sk-or-...' > .env
 PEEK_PROMPT=info ./peek.sh test/chat.png   # any prompts/<name>.txt
 ```
 
+## Ground truth
+```bash
+# any ground-truth/*.md is appended to every prompt as your tone/facts reference (gitignored, private)
+cat > ground-truth/whatsapp.md <<'MD'
+> Bora almoçar amanhã?
+Opa, bora sim!! Só confirma o lugar que eu colo
+MD
+```
+
 ## Mode
 ```bash
 ./set-mode.sh claude       # claude-code/sonnet via local bridge (Claude plan, `claude -p`)

@@ -3,3 +3,4 @@
 peek-hotkey
 bridge.log
 .prompt
+ground-truth/*.md

@@ -13,6 +13,13 @@ LAST="${TMPDIR:-/tmp}/peek-last.png"
 NAME="${PEEK_PROMPT:-$(cat "$DIR/.prompt" 2>/dev/null)}"
 [ -f "$DIR/prompts/$NAME.txt" ] || NAME=answer
 PROMPT=$(cat "$DIR/prompts/$NAME.txt")
+# ground-truth/*.md: mensagens reais suas, anexadas ao prompt como referência de tom e fatos
+GT=$(cat "$DIR"/ground-truth/*.md 2>/dev/null)
+# vem antes do prompt para as regras de saída serem a última coisa que o modelo lê
+[ -n "$GT" ] && PROMPT="Referência (ground truth): mensagens reais minhas e como eu respondo. Siga o tom, o estilo e os fatos daqui quando forem relevantes, sem copiar literalmente:
+$GT
+
+$PROMPT"
 
 # Sem terminal (veio do Peek.app): captura e reabre este script no Terminal, que não precisa de permissão extra
 if [ -z "$1" ] && [ ! -t 1 ]; then
@@ -30,7 +37,7 @@ else
   trap 'rm -f "$IMG" "$DIR/.prompt"; echo; read -rp "Enter para fechar " _' EXIT
 fi
 
-log "📸 Captura: $(( $(stat -f %z "$IMG") / 1024 )) KB  ·  prompt: $NAME"
+log "📸 Captura: $(( $(stat -f %z "$IMG") / 1024 )) KB  ·  prompt: $NAME${GT:+  ·  ground truth: $(ls "$DIR"/ground-truth/*.md | wc -l | tr -d " ") md}"
 if [[ "$API" == http://127.0.0.1* ]]; then
   # modo claude: sobe o bridge local se ainda não estiver no ar
   if ! curl -s --max-time 1 "$API/models" >/dev/null; then
